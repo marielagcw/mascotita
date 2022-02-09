@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+/* -------------------------------------------------------------------------- */
+/*                                  Variables                                 */
+/* -------------------------------------------------------------------------- */
+:root {
+  --bgColor: #7f7f7f;
+  --fontFamily: "VT323", monospace;
+  --fontColor: white;
+  --fontColorSecondary: rgb(255, 248, 187);
+}
+body {
+  background-color: var(--bgColor);
+  font-family: var(--fontFamily);
+  color: var(--fontColor);
+  font-size: 1.5rem;
+  text-align: center;
+}
+main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+section {
+  margin: 2rem;
+}
+.kaomoji {
+  width: 20rem;
+  align-content: center;
+}
+/* -------------------------- Customización botones ------------------------- */
+.botones {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.botones button {
+  background: none;
+  color: var(--fontColor);
+  font-size: 1.5rem;
+  box-shadow: none;
+  border: none;
+  margin: 1rem;
+}
+.btn:hover {
+  background: none;
+  color: var(--fontColorSecondary);
+  box-shadow: none;
+}
+.btn:hover::before {
+  content: ">";
+  transform: translate(-15px, 2px);
+  position: absolute;
+}
+/* ----------------------- Customización input Nombre ----------------------- */
+.ingresarNombreMascotita {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#inputNombre {
+  background: none;
+  color: var(--fontColor);
+  box-shadow: none;
+  border: none;
+}
+#inputNombre::placeholder {
+  color: var(--fontColor);
+  transform: scale(0.85);
+}
+#inputNombre:placeholder-shown {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+/* ------------------------------- Animaciones ------------------------------ */
+.parpadea {
+  animation-name: parpadeo;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
