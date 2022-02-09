@@ -7,12 +7,14 @@
   --fontFamily: "VT323", monospace;
   --fontColor: white;
   --fontColorSecondary: rgb(255, 248, 187);
+  --fontSizeLarge: 2rem;
+  --fontSizeMedium: 1.5rem;
 }
 body {
   background-color: var(--bgColor);
   font-family: var(--fontFamily);
   color: var(--fontColor);
-  font-size: 1.5rem;
+  font-size: var(--fontSizeLarge);
   text-align: center;
 }
 main {
@@ -30,34 +32,53 @@ section {
   width: 20rem;
   align-content: center;
 }
+.alerta {
+  color: var(--fontColorSecondary);
+  text-align: center;
+}
+.hidden {
+  visibility: hidden;
+}
+.displayNone {
+  display: none;
+}
+p {
+  font-size: var(--fontSizeMedium);
+  text-align: center;
+}
 /* -------------------------- Customización botones ------------------------- */
 .botones {
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .botones button {
   background: none;
   color: var(--fontColor);
-  font-size: 1.5rem;
-  box-shadow: none;
+  font-size: var(--fontSizeMedium);
+  font-family: var(--fontFamily);
   border: none;
   margin: 1rem;
 }
 .btn:hover {
-  background: none;
   color: var(--fontColorSecondary);
-  box-shadow: none;
 }
 .btn:hover::before {
   content: ">";
   transform: translate(-15px, 2px);
   position: absolute;
 }
+.btn:focus-within {
+  color: var(--fontColorSecondary);
+  outline: none;
+}
+.btn:focus-within::before {
+  content: ">";
+  transform: translate(-15px, 2px);
+  position: absolute;
+}
 /* ----------------------- Customización input Nombre ----------------------- */
-.ingresarNombreMascotita {
+#ingresarNombreMascotita {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,18 +86,31 @@ section {
 }
 #inputNombre {
   background: none;
-  color: var(--fontColor);
-  box-shadow: none;
+  color: var(--fontColorSecondary);
+  font-family: var(--fontFamily);
+  font-size: var(--fontSizeMedium);
+  text-align: center;
   border: none;
+  margin: 2rem;
 }
 #inputNombre::placeholder {
   color: var(--fontColor);
-  transform: scale(0.85);
+  font-size: var(--fontSizeMedium);
+  text-align: center;
 }
 #inputNombre:placeholder-shown {
   background: none;
-  box-shadow: none;
   border: none;
+  animation-name: parpadeo;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+#inputNombre:focus {
+  color: var(--fontColorSecondary);
+  font-size: var(--fontSizeMedium);
+  text-align: center;
+  outline: none;
 }
 /* ------------------------------- Animaciones ------------------------------ */
 .parpadea {
