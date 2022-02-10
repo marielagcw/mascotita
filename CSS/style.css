@@ -26,7 +26,7 @@ main {
   flex-wrap: wrap;
 }
 section {
-  margin: 2rem;
+  margin: 1rem;
 }
 .kaomoji {
   width: 20rem;
@@ -38,9 +38,6 @@ section {
 }
 .hidden {
   visibility: hidden;
-}
-.displayNone {
-  display: none;
 }
 p {
   font-size: var(--fontSizeMedium);

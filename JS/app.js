@@ -1,77 +1,102 @@
-/* ---------------------------------- Home ---------------------------------- */
+/* -------------------------------- Llamados al DOM ------------------------------- */
+const elements = {
+  sectionKaomoji: document.querySelector(".kaomoji"),
+  sectionMensaje: document.querySelector(".mensaje"),
+  sectionBotones: document.querySelector(".botones"),
+  btn1: document.querySelector("#divBtn1"),
+  btn2: document.querySelector("#divBtn2"),
+  btn3: document.querySelector("#divBtn3"),
+  btn4: document.querySelector("#divBtn4"),
+  alerta: document.querySelector(".alerta"),
+};
 
-let sectionMensaje = document.querySelector(".mensaje");
-let sectionBotones = document.querySelector(".botones");
-let sectionKaomoji = document.querySelector(".kaomoji");
+/* -------------------------- Llamado funciones ------------------------- */
 
+jugar();
+
+/* --------------------------------- Inicio --------------------------------- */
 function jugar() {
-  sectionMensaje.innerHTML = `<p>Holis! <br>¿Queres jugar?</p>`;
-  sectionKaomoji.innerHTML = `<div>⁂*.<( ⁀▽⁀ )>*⁂
-</div>`;
-  sectionBotones.innerHTML = `
-<button class="jugarSi btn">Si</button>
-<button class="jugarNo btn">No</button>
-`;
-
-  let btnJugarSi = document.querySelector(".jugarSi");
-  let btnJugarNo = document.querySelector(".jugarNo");
-  btnJugarSi.addEventListener("click", (e) => ingresarNombre());
-  btnJugarNo.addEventListener("click", (e) => {
-    sectionMensaje.innerText =
-      "Bueno, quizás en otra oportunidad nos conoceremos";
-    sectionKaomoji.innerText = "(≧﹏ ≦)";
-    sectionBotones.innerHTML = `
+  elements.sectionMensaje.innerHTML = `
+  <p>Holis! ¿Queres jugar?</p>
+  `;
+  elements.sectionKaomoji.innerHTML = `
+  <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
+  `;
+  elements.btn1.innerHTML = `
+  <button class="btn">Si</button>
+  `;
+  elements.btn2.innerHTML = `
+  <button class="btn">No</button>
+  `;
+  elements.btn1.addEventListener("click", () => {
+    ingresarNombre();
+    elements.btn1.innerHTML = `
+    <button class="btn">Listo</button>
+    `;
+    elements.btn2.innerHTML =`
+    <button class="btn">Volver</button>
+    ` ;
+  });
+  elements.btn2.addEventListener("click", () => {
+    elements.sectionKaomoji.innerHTML = `
+    <(≧^≦)>;
+    `;
+    elements.sectionMensaje.innerHTML = `
+    <p>Bueno, quizás en otra oportunidad nos conoceremos</p>
     <p>Gracias por tu visita</p>
     <p>Cuando quieras volver ingresa nuevamente a este website</p>
     `;
+    elements.btn1.innerHTML = "";
+    elements.btn2.innerHTML = "";
   });
 }
+
+/* ------------------------- Input Nombre Mascotita ------------------------- */
 function ingresarNombre() {
-  sectionMensaje.innerText = "¿Cómo quieres que se llame tu mascotita?";
-  sectionBotones.innerHTML = `
+  elements.sectionMensaje.innerHTML = `
     <div id="ingresarNombreMascotita">
-    <div class="alerta" id="alertaInputNombre"></div>
+    <p>¿Cómo quieres que se llame tu mascotita?</p>
         <input type="text" class="inputs" id="inputNombre" placeholder="Ingresa el nombre aquí" required>
-        <button class="btn" id="listo">Listo</button>
-        <button class="btn" id="volver">Volver</button>
     </div>
     `;
-  capturarNombre();
-
-  let btnVolver = document.querySelector("#volver");
-  btnVolver.addEventListener("click", (e) => {
-    let btnListo = document.querySelector("#listo");
-    let inputNombre = document.querySelector("#inputNombre");
-    inputNombre.classList.add("displayNone");
-    btnListo.classList.add("displayNone");
-    btnVolver.classList.add("displayNone");
+  const inputNombre = document.querySelector("#inputNombre");
+  elements.btn1.addEventListener("click", () => {
+    const nombreMascotita = inputNombre.value;
+    validarNombre(nombreMascotita);
+  });
+  elements.btn2.addEventListener("click", () => {
     jugar();
   });
 }
-/* ---------------------------- Nombre Mascotita ---------------------------- */
-function capturarNombre() {
-  let bntListo = document.querySelector("#listo");
-  let inputNombre = document.querySelector("#inputNombre");
-  bntListo.addEventListener("click", (e) => {
-    let nombreMascotita = inputNombre.value;
-    validarNombre(nombreMascotita);
-  });
-}
+/* ---------------------------- Validar input Nombre ---------------------------- */
 function validarNombre(nombre) {
   if (!nombre || nombre.length < 3) {
-    let alertaInputNombre = document.querySelector("#alertaInputNombre");
-    alertaInputNombre.innerText = "Por favor ingresa al menos 3 letras";
+    elements.alerta.classList.remove("hidden");
+    elements.alerta.innerHTML =`
+    <p>Por favor ingresa al menos 3 letras</p>
+    `;
     setTimeout(() => {
-      alertaInputNombre.classList.add("hidden");
+      elements.alerta.classList.add("hidden");
     }, 2000);
-    alertaInputNombre.classList.remove("hidden");
-    alertaInputNombre;
-    capturarNombre();
-    console.log("verificar");
-  }
-  saludar(nombre);
+    ingresarNombre();
+  } else saludar(nombre);
 }
+
+/* -------------------------------------------------------------------------- */
+/*                            Inicia vida mascotita                           */
+/* -------------------------------------------------------------------------- */
 function saludar(nombre) {
-  console.log("Holis! soy " + nombre);
+  if(elements.sectionKaomoji.hasChildNodes()){
+    elements.sectionKaomoji.innerHTML = `
+    <p>(つ≧▽≦)つ	</p>
+    `
+  } 
+  elements.sectionMensaje.innerHTML = `
+  <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
+  `
+  elements.alerta.innerHTML = "";
+  elements.btn1.innerHTML = "";
+  elements.btn2.addEventListener("click", ()=>{
+    ingresarNombre();
+  });
 }
-jugar();
