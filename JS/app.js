@@ -16,7 +16,6 @@ jugar();
 
 /* --------------------------------- Inicio --------------------------------- */
 function jugar() {
-  console.log("Estoy jugando");
   elements.sectionKaomoji.innerHTML = `
   <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
   `;
@@ -29,8 +28,8 @@ function jugar() {
   elements.btn4.innerHTML = `
   <button class="btn">No</button>
   `;
-  elements.btn1.addEventListener("click", () => {
-    console.log("Ingresa mi nombre");
+  elements.btn1.addEventListener("click", function crearPantallaNombre(){
+    console.log("Evento Pantalla Nombre");
     ingresarNombre();
     elements.btn1.innerHTML = `
     <button class="btn">Listo</button>
@@ -38,8 +37,9 @@ function jugar() {
     elements.btn4.innerHTML = `
     <button class="btn">Volver</button>
     `;
+    elements.btn1.removeEventListener("click", crearPantallaNombre);
   });
-  elements.btn4.addEventListener("click", () => {
+  elements.btn4.addEventListener("click", function crearPantallaNoJugar(){
     elements.sectionKaomoji.innerHTML = `
     <(≧^≦)>;
     `;
@@ -50,7 +50,8 @@ function jugar() {
     `;
     elements.btn1.innerHTML = "";
     elements.btn4.innerHTML = "";
-    console.log("No quisiste jugar")
+    console.log("Evento Pantalla No Jugar");
+    elements.btn4.removeEventListener("click", crearPantallaNoJugar);
   });
 }
 
@@ -63,15 +64,17 @@ function ingresarNombre() {
     </div>
     `;
   const inputNombre = document.querySelector("#inputNombre");
-  elements.btn1.addEventListener("click", () => {
+  elements.btn1.addEventListener("click", function crearPantallaValidarNombre(){
     const nombreMascotita = inputNombre.value;
-    console.log("Ya tengo nombre? veamos si es válido");
+    console.log("Evento Pantalla Validar Nombre");
     validarNombre(nombreMascotita);
+    elements.btn1.removeEventListener("click", crearPantallaValidarNombre);
   });
   elements.btn2.innerHTML = "";
   elements.btn3.innerHTML = "";
-  elements.btn4.addEventListener("click", () => {
+  elements.btn4.addEventListener("click", function crearPantallaInicio(){
     jugar();
+    elements.btn4.removeEventListener("click", crearPantallaInicio);
   });
 }
 /* ---------------------------- Validar input Nombre ---------------------------- */
@@ -87,7 +90,7 @@ function validarNombre(nombre) {
     console.log("Mi nombre no es válido, ingresalo de nuevo");
     ingresarNombre();
   } else {
-   console.log("Holis! Mi nombre fue válido")
+    console.log("Holis! Mi nombre fue válido");
     saludar(nombre);
   }
 }
@@ -117,10 +120,11 @@ function saludar(nombre) {
   <button class="btn">Jugar<button>
   `;
   vivir();
-  elements.btn4.addEventListener("click", () => {
+  elements.btn4.addEventListener("click", function crearPantallaVolver(){
     ingresarNombre();
     elements.btn2.innerHTML = "";
     elements.btn3.innerHTML = "";
+    elements.btn4.removeEventListener("click", crearPantallaVolver);
   });
 }
 
@@ -152,4 +156,3 @@ function vivir() {
 }
 
 /* --------------------- Interacciones con la mascotita --------------------- */
-
