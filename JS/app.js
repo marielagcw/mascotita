@@ -16,28 +16,30 @@ jugar();
 
 /* --------------------------------- Inicio --------------------------------- */
 function jugar() {
-  elements.sectionMensaje.innerHTML = `
-  <p>Holis! ¿Queres jugar?</p>
-  `;
+  console.log("Estoy jugando");
   elements.sectionKaomoji.innerHTML = `
   <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
+  `;
+  elements.sectionMensaje.innerHTML = `
+  <p>Holis! ¿Queres jugar?</p>
   `;
   elements.btn1.innerHTML = `
   <button class="btn">Si</button>
   `;
-  elements.btn2.innerHTML = `
+  elements.btn4.innerHTML = `
   <button class="btn">No</button>
   `;
   elements.btn1.addEventListener("click", () => {
+    console.log("Ingresa mi nombre");
     ingresarNombre();
     elements.btn1.innerHTML = `
     <button class="btn">Listo</button>
     `;
-    elements.btn2.innerHTML =`
+    elements.btn4.innerHTML = `
     <button class="btn">Volver</button>
-    ` ;
+    `;
   });
-  elements.btn2.addEventListener("click", () => {
+  elements.btn4.addEventListener("click", () => {
     elements.sectionKaomoji.innerHTML = `
     <(≧^≦)>;
     `;
@@ -47,7 +49,8 @@ function jugar() {
     <p>Cuando quieras volver ingresa nuevamente a este website</p>
     `;
     elements.btn1.innerHTML = "";
-    elements.btn2.innerHTML = "";
+    elements.btn4.innerHTML = "";
+    console.log("No quisiste jugar")
   });
 }
 
@@ -62,9 +65,12 @@ function ingresarNombre() {
   const inputNombre = document.querySelector("#inputNombre");
   elements.btn1.addEventListener("click", () => {
     const nombreMascotita = inputNombre.value;
+    console.log("Ya tengo nombre? veamos si es válido");
     validarNombre(nombreMascotita);
   });
-  elements.btn2.addEventListener("click", () => {
+  elements.btn2.innerHTML = "";
+  elements.btn3.innerHTML = "";
+  elements.btn4.addEventListener("click", () => {
     jugar();
   });
 }
@@ -72,31 +78,78 @@ function ingresarNombre() {
 function validarNombre(nombre) {
   if (!nombre || nombre.length < 3) {
     elements.alerta.classList.remove("hidden");
-    elements.alerta.innerHTML =`
+    elements.alerta.innerHTML = `
     <p>Por favor ingresa al menos 3 letras</p>
     `;
     setTimeout(() => {
       elements.alerta.classList.add("hidden");
     }, 2000);
+    console.log("Mi nombre no es válido, ingresalo de nuevo");
     ingresarNombre();
-  } else saludar(nombre);
+  } else {
+   console.log("Holis! Mi nombre fue válido")
+    saludar(nombre);
+  }
 }
 
 /* -------------------------------------------------------------------------- */
 /*                            Inicia vida mascotita                           */
 /* -------------------------------------------------------------------------- */
+
 function saludar(nombre) {
-  if(elements.sectionKaomoji.hasChildNodes()){
+  mascotita.nombre = nombre;
+  if (elements.sectionKaomoji.hasChildNodes()) {
     elements.sectionKaomoji.innerHTML = `
     <p>(つ≧▽≦)つ	</p>
-    `
-  } 
+    `;
+  }
   elements.sectionMensaje.innerHTML = `
   <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
-  `
+  `;
   elements.alerta.innerHTML = "";
-  elements.btn1.innerHTML = "";
-  elements.btn2.addEventListener("click", ()=>{
+  elements.btn1.innerHTML = `
+  <button class="btn">Alimentar<button>
+  `;
+  elements.btn2.innerHTML = `
+  <button class="btn">Ejercitar<button>
+  `;
+  elements.btn3.innerHTML = `
+  <button class="btn">Jugar<button>
+  `;
+  vivir();
+  elements.btn4.addEventListener("click", () => {
     ingresarNombre();
+    elements.btn2.innerHTML = "";
+    elements.btn3.innerHTML = "";
   });
 }
+
+/* -------------------------------- Mascotita ------------------------------- */
+const mascotita = {
+  nombre: "",
+  edad: 0,
+  estado: "",
+  kaomoji: "",
+  energia: 100,
+  hambre: 0,
+  aburrimiento: 0,
+};
+
+/* ---------------------------------- Vivir --------------------------------- */
+
+function vivir() {
+  console.log("Estoy viviendo");
+  // const viviendo = setInterval(() => {
+  //   mascotita.edad++;
+  //   mascotita.energia --;
+  //   mascotita.hambre ++;
+  //   mascotita.aburrimiento ++;
+  //   console.log("Estoy viviendo");
+  //   if(mascotita.edad == 10 || mascotita.energia == 0){
+  //     clearInterval(viviendo);
+  //   }
+  // }, 100);
+}
+
+/* --------------------- Interacciones con la mascotita --------------------- */
+
