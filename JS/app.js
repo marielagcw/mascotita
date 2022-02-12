@@ -10,76 +10,66 @@ const elements = {
   alerta: document.querySelector(".alerta"),
 };
 
-/* -------------------------- Llamado funciones ------------------------- */
+/* ------------------------------ Creando botones ----------------------------- */
+function crearBoton(innerText, action) {
+  const boton = document.createElement("button");
+  boton.classList.add("btn");
+  boton.innerText = innerText;
+  boton.addEventListener("click", action);
+  return boton;
+}
 
-jugar();
+/* -------------------------------------------------------------------------- */
+/*                      Juego y renderizado de pantallas                      */
+/* -------------------------------------------------------------------------- */
+
+inicioScreen();
 
 /* --------------------------------- Inicio --------------------------------- */
-function jugar() {
+function inicioScreen() {
   elements.sectionKaomoji.innerHTML = `
   <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
   `;
   elements.sectionMensaje.innerHTML = `
   <p>Holis! ¿Queres jugar?</p>
   `;
-  elements.btn1.innerHTML = `
-  <button class="btn">Si</button>
-  `;
-  elements.btn4.innerHTML = `
-  <button class="btn">No</button>
-  `;
-  elements.btn1.addEventListener("click", function crearPantallaNombre(){
-    console.log("Evento Pantalla Nombre");
-    ingresarNombre();
-    elements.btn1.innerHTML = `
-    <button class="btn">Listo</button>
-    `;
-    elements.btn4.innerHTML = `
-    <button class="btn">Volver</button>
-    `;
-    elements.btn1.removeEventListener("click", crearPantallaNombre);
-  });
-  elements.btn4.addEventListener("click", function crearPantallaNoJugar(){
-    elements.sectionKaomoji.innerHTML = `
-    <(≧^≦)>;
-    `;
-    elements.sectionMensaje.innerHTML = `
-    <p>Bueno, quizás en otra oportunidad nos conoceremos</p>
-    <p>Gracias por tu visita</p>
-    <p>Cuando quieras volver ingresa nuevamente a este website</p>
-    `;
-    elements.btn1.innerHTML = "";
-    elements.btn4.innerHTML = "";
-    console.log("Evento Pantalla No Jugar");
-    elements.btn4.removeEventListener("click", crearPantallaNoJugar);
-  });
-}
 
-/* ------------------------- Input Nombre Mascotita ------------------------- */
-function ingresarNombre() {
+  elements.btn1.replaceChildren(crearBoton("Si", ingresarNombreScreen));
+  elements.btn4.replaceChildren(crearBoton("No", noJugarScreen));
+}
+/* -------------------------------- No Jugar -------------------------------- */
+function noJugarScreen() {
+  elements.sectionKaomoji.innerHTML = `
+  <(≧^≦)>;
+  `;
+  elements.sectionMensaje.innerHTML = `
+  <p>Bueno, quizás en otra oportunidad nos conoceremos</p>
+  <p>Gracias por tu visita</p>
+  <p>Cuando quieras volver ingresa nuevamente a este website</p>
+  `;
+  elements.btn1.innerHTML = "";
+  elements.btn4.innerHTML = "";
+}
+/* ----------------------- Si Jugar / Nombre Mascotita ---------------------- */
+function ingresarNombreScreen() {
+  elements.sectionKaomoji.innerHTML = `
+  <p>(->>￣▽￣)->></p>
+  `;
   elements.sectionMensaje.innerHTML = `
     <div id="ingresarNombreMascotita">
     <p>¿Cómo quieres que se llame tu mascotita?</p>
         <input type="text" class="inputs" id="inputNombre" placeholder="Ingresa el nombre aquí" required>
     </div>
     `;
-  const inputNombre = document.querySelector("#inputNombre");
-  elements.btn1.addEventListener("click", function crearPantallaValidarNombre(){
-    const nombreMascotita = inputNombre.value;
-    console.log("Evento Pantalla Validar Nombre");
-    validarNombre(nombreMascotita);
-    elements.btn1.removeEventListener("click", crearPantallaValidarNombre);
-  });
   elements.btn2.innerHTML = "";
   elements.btn3.innerHTML = "";
-  elements.btn4.addEventListener("click", function crearPantallaInicio(){
-    jugar();
-    elements.btn4.removeEventListener("click", crearPantallaInicio);
-  });
+  elements.btn1.replaceChildren(crearBoton("Listo", validarNombre));
+  elements.btn4.replaceChildren(crearBoton("Volver", inicioScreen));
 }
-/* ---------------------------- Validar input Nombre ---------------------------- */
-function validarNombre(nombre) {
-  if (!nombre || nombre.length < 3) {
+function validarNombre() {
+  const inputNombre = document.querySelector("#inputNombre");
+  const nombreMascotita = inputNombre.value;
+  if (!nombreMascotita || nombreMascotita.length < 3) {
     elements.alerta.classList.remove("hidden");
     elements.alerta.innerHTML = `
     <p>Por favor ingresa al menos 3 letras</p>
@@ -87,20 +77,16 @@ function validarNombre(nombre) {
     setTimeout(() => {
       elements.alerta.classList.add("hidden");
     }, 2000);
-    console.log("Mi nombre no es válido, ingresalo de nuevo");
-    ingresarNombre();
   } else {
-    console.log("Holis! Mi nombre fue válido");
-    saludar(nombre);
+    saludarScreen(nombreMascotita);
+    elements.btn4.replaceChildren(crearBoton("Volver", ingresarNombreScreen));
   }
 }
-
-/* -------------------------------------------------------------------------- */
-/*                            Inicia vida mascotita                           */
-/* -------------------------------------------------------------------------- */
-
-function saludar(nombre) {
+/* -------------------------- Inicia vida Mascotita ------------------------- */
+function saludarScreen(nombre) {
+  console.log(nombre);
   mascotita.nombre = nombre;
+
   if (elements.sectionKaomoji.hasChildNodes()) {
     elements.sectionKaomoji.innerHTML = `
     <p>(つ≧▽≦)つ	</p>
@@ -110,22 +96,11 @@ function saludar(nombre) {
   <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
   `;
   elements.alerta.innerHTML = "";
-  elements.btn1.innerHTML = `
-  <button class="btn">Alimentar<button>
-  `;
-  elements.btn2.innerHTML = `
-  <button class="btn">Ejercitar<button>
-  `;
-  elements.btn3.innerHTML = `
-  <button class="btn">Jugar<button>
-  `;
+  elements.btn1.replaceChildren(crearBoton("Alimentar", alimentarScreen));
+  elements.btn2.replaceChildren(crearBoton("Ejercitar", ejercitarScreen));
+  elements.btn3.replaceChildren(crearBoton("Jugar", jugarScreen));
+  elements.btn4.replaceChildren(crearBoton("Volver", ingresarNombreScreen));
   vivir();
-  elements.btn4.addEventListener("click", function crearPantallaVolver(){
-    ingresarNombre();
-    elements.btn2.innerHTML = "";
-    elements.btn3.innerHTML = "";
-    elements.btn4.removeEventListener("click", crearPantallaVolver);
-  });
 }
 
 /* -------------------------------- Mascotita ------------------------------- */
@@ -145,14 +120,23 @@ function vivir() {
   console.log("Estoy viviendo");
   // const viviendo = setInterval(() => {
   //   mascotita.edad++;
-  //   mascotita.energia --;
-  //   mascotita.hambre ++;
-  //   mascotita.aburrimiento ++;
+  //   mascotita.energia--;
+  //   mascotita.hambre++;
+  //   mascotita.aburrimiento++;
   //   console.log("Estoy viviendo");
-  //   if(mascotita.edad == 10 || mascotita.energia == 0){
+  //   if (mascotita.edad == 10 || mascotita.energia == 0) {
   //     clearInterval(viviendo);
   //   }
-  // }, 100);
+  // }, 1000);
 }
 
 /* --------------------- Interacciones con la mascotita --------------------- */
+function alimentarScreen() {
+  console.log("Me alimentaste!");
+}
+function ejercitarScreen() {
+  console.log("Hicimos ejercicio!");
+}
+function jugarScreen() {
+  console.log("Qué divertido jugar!");
+}
