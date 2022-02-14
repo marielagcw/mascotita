@@ -84,7 +84,6 @@ function validarNombre() {
 }
 /* -------------------------- Inicia vida Mascotita ------------------------- */
 function saludarScreen(nombre) {
-  console.log(nombre);
   mascotita.nombre = nombre;
 
   if (elements.sectionKaomoji.hasChildNodes()) {
@@ -96,11 +95,12 @@ function saludarScreen(nombre) {
   <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
   `;
   elements.alerta.innerHTML = "";
-  elements.btn1.replaceChildren(crearBoton("Alimentar", alimentarScreen));
-  elements.btn2.replaceChildren(crearBoton("Ejercitar", ejercitarScreen));
-  elements.btn3.replaceChildren(crearBoton("Jugar", jugarScreen));
+  elements.btn1.replaceChildren(crearBoton("Alimentar", comer));
+  elements.btn2.replaceChildren(crearBoton("Ejercitar", ejercitar));
+  elements.btn3.replaceChildren(crearBoton("Jugar", jugar));
   elements.btn4.replaceChildren(crearBoton("Volver", ingresarNombreScreen));
   vivir();
+  mostrarEstadoActual();
 }
 
 /* -------------------------------- Mascotita ------------------------------- */
@@ -109,34 +109,144 @@ const mascotita = {
   edad: 0,
   estado: "",
   kaomoji: "",
-  energia: 100,
-  hambre: 0,
-  aburrimiento: 0,
+  energia: 10,
+  hambre: 5,
+  aburrimiento: 5,
 };
 
 /* ---------------------------------- Vivir --------------------------------- */
-
 function vivir() {
-  console.log("Estoy viviendo");
-  // const viviendo = setInterval(() => {
-  //   mascotita.edad++;
-  //   mascotita.energia--;
-  //   mascotita.hambre++;
-  //   mascotita.aburrimiento++;
-  //   console.log("Estoy viviendo");
-  //   if (mascotita.edad == 10 || mascotita.energia == 0) {
-  //     clearInterval(viviendo);
-  //   }
-  // }, 1000);
+  const viviendo = setInterval(() => {
+    mascotita.edad++;
+    mascotita.energia--;
+    mascotita.hambre++;
+    mascotita.aburrimiento++;
+    console.log(mascotita);
+    if (mascotita.edad >= 10 || mascotita.energia <= 0) {
+      clearInterval(viviendo);
+    }
+  }, 9000);
+}
+/* ------------------------- Estados de la mascotita ------------------------ */
+function mostrarEstadoActual() {
+  const mostrarEstadoAhora = setInterval(() => {
+    revisarSalud();
+
+    elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
+    elements.sectionMensaje.innerHTML = mascotita.estado;
+
+    if (mascotita.edad == 10 || mascotita.energia == 0) {
+      clearInterval(mostrarEstadoAhora);
+    }
+  }, 5000);
+}
+const animoMascotita = {
+    feliz: function estarFeliz() {
+      const felizAleatorio = Math.random()*10;
+      if(felizAleatorio <= 3){
+        mascotita.kaomoji = `<p> <(￣︶￣)>	</p>`;
+        mascotita.estado = `<p> Esto sí es estar feliz</p>`;
+      }
+      if(felizAleatorio > 3 && felizAleatorio <= 6){
+        mascotita.kaomoji = `<p> (ﾉ´ヮ\`)ﾉ*:･ﾟ✧ </p>`;
+        mascotita.estado = `<p> Feliz feliz jejeje gracias por tanto!!</p>`; 
+      }
+      else {
+        mascotita.kaomoji = `<p> ☆*:.o(◠▽◠)o.:*☆
+        </p>`;
+        mascotita.estado = `<p> Wiii estoy súper! </p>`;
+      }
+  },
+  aburrida: function estarAburrida() {
+    mascotita.kaomoji = `<p> ¯\┐(￣ヘ￣)┌	/¯ </p>`;
+      mascotita.estado = `<p> ufff... qué aburrimiento! </p>`;
+  },
+  hambrienta: function estarHambrienta() {
+    mascotita.kaomoji = `<p>〜(>-<)〜 </p>`;
+    mascotita.estado = `<p> Mi pancita hace ruido... tengo hambre! </p>`;
+  },
+  debil: function estarDebil() {
+    mascotita.kaomoji = `<p> (￢_￢)	</p>`;
+      mascotita.estado = `<p> Me siento débil... quiero entrenar</p>`;
+  },
+  aburridaHambrienta: function estoyAburridaHambrienta() {
+    mascotita.kaomoji = `<p> (╥T_T╥)	</p>`;
+    mascotita.estado = `<p> Quiero comer y hacer algo...jugamos? </p>`;
+  },
+  aburridaHambrientaDebil: function estoyAburridaHambrientaDebil() {
+    mascotita.kaomoji = `<p>.｡･ﾟﾟ･(>_<)･ﾟﾟ･｡.
+    </p>`;
+    mascotita.estado = `<p>Tengo hambre!<br>
+    Siento aburrimiento! <br>
+    Estoy triste  </p>`;
+  },
+  hambrientaDebil: function estoyHambrientaDebil() {
+    mascotita.kaomoji = `<p> ｡ﾟ･ ( >__< ) ･ﾟ｡
+     </p>`;
+    mascotita.estado = `<p> Me siento débil y encima tengo mucha hambre! </p>`;
+  },
+  aburridaDebil: function estoyAburridaDebil() {
+    mascotita.kaomoji = `<p> (* ￣︿￣)</p>`;
+    mascotita.estado = `<p> ¿Te acordas de mi? Porque estoy débil y quisiera jugar también</p>`;
+  },
+};
+
+/* ------------------------ Chequeos de la mascotita ------------------------ */
+function revisarSalud() {
+  const valorAceptable = 5;
+  if (mascotita.aburrimiento >= valorAceptable) {
+    animoMascotita.aburrida();
+  }
+  if (mascotita.hambre >= valorAceptable) {
+    animoMascotita.hambrienta();
+  }
+  if (mascotita.energia <= valorAceptable) {
+    animoMascotita.debil();
+  }
+  if (
+    mascotita.aburrimiento >= valorAceptable &&
+    mascotita.hambrienta >= valorAceptable
+  ) {
+    animoMascotita.aburridaHambrienta();
+  }
+  if (
+    mascotita.aburrimiento >= valorAceptable &&
+    mascotita.hambrienta >= valorAceptable &&
+    mascotita.energia <= valorAceptable
+  ) {
+    animoMascotita.aburridaHambrientaDebil();
+  }
+  if (
+    mascotita.hambre >= valorAceptable &&
+    mascotita.energia <= valorAceptable
+  ) {
+    animoMascotita.hambrientaDebil();
+  }
+  if (
+    mascotita.aburrimiento >= valorAceptable &&
+    mascotita.energia <= valorAceptable
+  ) {
+    animoMascotita.aburridaDebil();
+  }
 }
 
 /* --------------------- Interacciones con la mascotita --------------------- */
-function alimentarScreen() {
-  console.log("Me alimentaste!");
+function comer() {
+  if(mascotita.hambre <=0){
+    mascotita.hambre = 0;
+  }else mascotita.hambre--;
+  revisarSalud();
+  elements.sectionMensaje.innerHTML = `<p>Mmmmm que rico!</p>`
 }
-function ejercitarScreen() {
-  console.log("Hicimos ejercicio!");
+function ejercitar() {
+  mascotita.energia++;
+  revisarSalud();
+  elements.sectionMensaje.innerHTML = `<p>Me siento flash!</p>`
 }
-function jugarScreen() {
-  console.log("Qué divertido jugar!");
+function jugar() {
+  if(mascotita.aburrimiento <= 0){
+    mascotita.aburrimiento = 0;
+  } else mascotita.aburrimiento--;
+  revisarSalud();
+  elements.sectionMensaje.innerHTML = `<p>jejeje eso estuvo bueno</p>`
 }
