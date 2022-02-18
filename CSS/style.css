@@ -9,9 +9,6 @@
   --fontColorSecondary: rgb(255, 248, 187);
   --fontSizeLarge: 2rem;
   --fontSizeMedium: 1.5rem;
-  --green1: lightgreen;
-  --green2: green;
-  --green3: darkgreen;
 }
 body {
   background-color: var(--bgColor);
@@ -44,7 +41,7 @@ section {
   color: var(--fontColorSecondary);
   text-align: center;
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 .hidden {
   visibility: hidden;
@@ -143,7 +140,8 @@ p {
 .progressbar-text{
   font-size: 1rem;
 }
-section.barras{
-  position:absolute;
-  top: 50%;
+.alerta div{
+  margin: 0.3rem;
+  position:relative;
+  bottom: 5rem;
 }

@@ -8,7 +8,6 @@ const elements = {
   btn3: document.querySelector("#divBtn3"),
   btn4: document.querySelector("#divBtn4"),
   sectionAlerta: document.querySelector(".alerta"),
-  sectionBarras: document.querySelector(".barras"),
 };
 
 /* ------------------------------ Creando botones ----------------------------- */
@@ -91,51 +90,65 @@ const mascotita = {
   edad: 0,
   estado: "",
   kaomoji: "",
-  energia: 100,
+  energia: 10,
   hambre: 0,
   aburrimiento: 0,
+
   crearLineaEnergia: () => {
-    mascotita.lineaEnergia = new ProgressBar.Line(".barras", {
+    mascotita.lineaEnergia = new ProgressBar.Line(".barraEnergia", {
+      from: { color: "#FF6856" },
+      to: { color: "#00E186 " },
+      step: function (state, bar, attachment) {
+        bar.path.setAttribute("stroke", state.color);
+      },
       strokeWidth: 5,
-      color: "#4218D9",
+      trailColor: "#949494",
+      trailWidth: 0.8,
+      trailWidth: 4,
       duration: 500,
       easing: "linear",
       text: {
         style: {
           color: "#ffffff",
-          position: "absolute",
+          position: "relative",
           left: "0%",
           top: "0%",
-          padding: 10,
-          margin: 10,
+          padding: 0,
+          margin: 5,
           transform: {
             prefix: true,
-            value: "translate(-110%, -0%)",
+            value: "translate(-0%, -0%)",
           },
         },
-        value: "Energia",
+        value: "Fuerza",
         className: "progressbar-text",
       },
     });
   },
   lineaEnergia: null,
   crearLineaAburrimiento: () => {
-    mascotita.lineaAburrimiento = new ProgressBar.Line(".barras", {
+    mascotita.lineaAburrimiento = new ProgressBar.Line(".barraAburrimiento", {
+      from: { color: "#00E186" },
+      to: { color: "#FF6856" },
+      step: function (state, bar, attachment) {
+        bar.path.setAttribute("stroke", state.color);
+      },
       strokeWidth: 5,
-      color: "#6C3CC2",
+      trailColor: "#949494",
+      trailWidth: 4,
       duration: 500,
       easing: "linear",
       text: {
         style: {
           color: "#ffffff",
-          position: "absolute",
+          position: "relative",
           left: "0%",
-          top: "30%",
-          padding: 10,
-          margin: 10,
+          top: "0%",
+          padding: 0,
+          margin: 5,
           transform: {
             prefix: true,
-            value: "translate(-110%, -0%)",
+            value: "translate(-0%, -0%)",
           },
         },
         value: "Aburrimiento",
@@ -145,22 +158,28 @@ const mascotita = {
   },
   lineaAburrimiento: null,
   crearLineaHambre: () => {
-    mascotita.lineaHambre = new ProgressBar.Line(".barras", {
+    mascotita.lineaHambre = new ProgressBar.Line(".barraHambre", {
+      from: { color: "#00E186" },
+      to: { color: "#FF6856" },
+      step: function (state, bar, attachment) {
+        bar.path.setAttribute("stroke", state.color);
+      },
       strokeWidth: 5,
-      color: "#1A0859",
+      trailWidth: 4,
+      trailColor: "#949494",
       duration: 500,
       easing: "linear",
       text: {
         style: {
           color: "#ffffff",
-          position: "absolute",
+          position: "relative",
           left: "0%",
-          top: "60%",
-          padding: 10,
-          margin: 10,
+          top: "0%",
+          padding: 0,
+          margin: 5,
           transform: {
             prefix: true,
-            value: "translate(-110%, -0%)",
+            value: "translate(-0%, -0%)",
           },
         },
         value: "Hambre",
@@ -177,9 +196,9 @@ function saludarScreen(nombre) {
   mascotita.nombre = nombre;
   mascotita.edad = 0;
   mascotita.kaomoji = `<p>(つ≧▽≦)つ	</p>`;
-  mascotita.energia = 62;
-  mascotita.hambre = 48;
-  mascotita.aburrimiento = 36;
+  mascotita.energia = 6;
+  mascotita.hambre = 4;
+  mascotita.aburrimiento = 3;
   mascotita.crearLineaEnergia();
   mascotita.crearLineaAburrimiento();
   mascotita.crearLineaHambre();
@@ -191,7 +210,6 @@ function saludarScreen(nombre) {
   elements.sectionMensaje.innerHTML = `
   <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
   `;
-  elements.sectionAlerta.innerHTML = "";
 
   // Nuevos botones
   elements.btn1.replaceChildren(crearBoton("Alimentar", comer));
@@ -202,9 +220,9 @@ function saludarScreen(nombre) {
 }
 
 /* ---------------------------------- Vivir --------------------------------- */
-const edadMaxima = 100;
-const intervaloVivir = 10000;
-const intervaloEstado = 2500;
+const edadMaxima = 10;
+const intervaloVivir = 15000;
+const intervaloEstado = 5000;
 
 function vivir() {
   mostrarEstadoActual();
@@ -231,15 +249,15 @@ function mostrarEstadoActual() {
 
     elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
     elements.sectionMensaje.innerHTML = mascotita.estado;
-    mascotita.lineaEnergia.animate(mascotita.energia / 100);
-    mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 100,);
-    mascotita.lineaHambre.animate(mascotita.hambre / 100);
+    mascotita.lineaEnergia.animate(mascotita.energia / 10);
+    mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 10);
+    mascotita.lineaHambre.animate(mascotita.hambre / 10);
   }, intervaloEstado);
 }
 const animoMascotita = {
   dormida: () => {
     mascotita.kaomoji = `<p> /ᐠ｡ꞈ｡ᐟ\\ <br>ZzzzZZz</p>`;
-    mascotita.estado = `<p> No me siento bien... estoy descansando... </p>`;
+    mascotita.estado = `<p> Estoy descansando... </p>`;
   },
   feliz: function estarFeliz() {
     mascotita.kaomoji = `<p> (ﾉ'ヮ')ﾉ*:･ﾟ✧ </p>`;
@@ -281,14 +299,22 @@ const animoMascotita = {
 
 /* ------------------------ Chequeos de la mascotita ------------------------ */
 function revisarSalud() {
-  const valorEstoyAburrida = 40;
-  const valorEstoyHambrienta = 50;
-  const valorEstoyDebil = 60;
-
+  const valorEstoyAburrida = 4;
+  const valorEstoyHambrienta = 5;
+  const valorEstoyDebil = 6;
+  if (mascotita.energia > 9) {
+    mascotita.energia = 9;
+  }
+  if (mascotita.aburrimiento > 9) {
+    mascotita.aburrimiento = 9;
+  }
+  if (mascotita.hambre > 9) {
+    mascotita.hambre = 9;
+  }
   if (
-    mascotita.energia >= 65 &&
-    mascotita.aburrimiento < 30 &&
-    mascotita.hambre < 30
+    mascotita.energia >= 6 &&
+    mascotita.aburrimiento < 3 &&
+    mascotita.hambre < 3
   ) {
     animoMascotita.feliz();
     console.log(
@@ -459,7 +485,7 @@ function revisarSalud() {
 
 /* --------------------- Interacciones con la mascotita --------------------- */
 function comer() {
-  if (mascotita.hambre <= 0) {
+  if (mascotita.hambre < 0) {
     mascotita.hambre = 0;
   } else mascotita.hambre--;
   revisarSalud();
@@ -475,7 +501,7 @@ function ejercitar() {
   elements.sectionMensaje.innerHTML = `<p>Me siento flash!</p>`;
 }
 function jugar() {
-  if (mascotita.aburrimiento <= 0) {
+  if (mascotita.aburrimiento < 0) {
     mascotita.aburrimiento = 0;
   } else mascotita.aburrimiento--;
   revisarSalud();
@@ -485,13 +511,16 @@ function jugar() {
   ¿Qué hacemos ahora?</p>`;
 }
 function reiniciar() {
-  mascotita.energia = -1;
+  mascotita.energia = 0;
   elements.sectionKaomoji.innerHTML = `
   <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
   `;
   elements.sectionMensaje.innerHTML = `
   <p>Holis! ¿Queres jugar?</p>
   `;
+  mascotita.lineaAburrimiento.destroy();
+  mascotita.lineaEnergia.destroy();
+  mascotita.lineaHambre.destroy();
   elements.btn1.innerHTML = "";
   elements.btn2.innerHTML = "";
   elements.btn3.innerHTML = "";

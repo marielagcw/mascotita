@@ -2108,8 +2108,7 @@
             var textStyle = opts.text.style;
             if (textStyle) {
               if (opts.text.autoStyleContainer) {
-                  //original: position relative
-                container.style.position = "absolute";
+                container.style.position = "relative";
               }
 
               utils.setStyles(textContainer, textStyle);
