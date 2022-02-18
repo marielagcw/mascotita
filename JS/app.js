@@ -225,6 +225,7 @@ const intervaloVivir = 15000;
 const intervaloEstado = 5000;
 
 function vivir() {
+  actualizarBarras();
   mostrarEstadoActual();
   viviendo = setInterval(() => {
     mascotita.edad++;
@@ -249,9 +250,6 @@ function mostrarEstadoActual() {
 
     elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
     elements.sectionMensaje.innerHTML = mascotita.estado;
-    mascotita.lineaEnergia.animate(mascotita.energia / 10);
-    mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 10);
-    mascotita.lineaHambre.animate(mascotita.hambre / 10);
   }, intervaloEstado);
 }
 const animoMascotita = {
@@ -265,7 +263,7 @@ const animoMascotita = {
   },
   aburrida: function estarAburrida() {
     mascotita.kaomoji = `<p> ¯\┐(￣ヘ￣)┌	/¯ </p>`;
-    mascotita.estado = `<p> ufff... qué aburrimiento! </p>`;
+    mascotita.estado = `<p> ufff... Quiero jugar </p>`;
   },
   hambrienta: function estarHambrienta() {
     mascotita.kaomoji = `<p>〜( > _ < )〜 </p>`;
@@ -273,7 +271,7 @@ const animoMascotita = {
   },
   debil: function estarDebil() {
     mascotita.kaomoji = `<p> (￢_￢)	</p>`;
-    mascotita.estado = `<p> Me siento débil... quiero entrenar</p>`;
+    mascotita.estado = `<p> Necesito entrenar</p>`;
   },
   aburridaHambrienta: function estoyAburridaHambrienta() {
     mascotita.kaomoji = `<p> (╥T_T╥)	</p>`;
@@ -289,11 +287,11 @@ const animoMascotita = {
   hambrientaDebil: function estoyHambrientaDebil() {
     mascotita.kaomoji = `<p> ｡ﾟ･ ( >__< ) ･ﾟ｡
      </p>`;
-    mascotita.estado = `<p> Me siento débil y encima tengo mucha hambre! </p>`;
+    mascotita.estado = `<p> Quiero entrenar y también tengo hambre! </p>`;
   },
   aburridaDebil: function estoyAburridaDebil() {
     mascotita.kaomoji = `<p> (* ￣︿￣)</p>`;
-    mascotita.estado = `<p> ¿Te acordas de mi? Porque estoy débil y quisiera jugar también</p>`;
+    mascotita.estado = `<p> ¿Te acordas de mi? Porque estoy débil y quisiera jugar</p>`;
   },
 };
 
@@ -525,4 +523,15 @@ function reiniciar() {
   elements.btn2.innerHTML = "";
   elements.btn3.innerHTML = "";
   elements.btn4.innerHTML = "";
+}
+function actualizarBarras(){
+const actualizarBarras = setInterval(()=>{
+  mascotita.lineaEnergia.animate(mascotita.energia / 10);
+  mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 10);
+  mascotita.lineaHambre.animate(mascotita.hambre / 10);
+}, 100);
+if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
+  clearInterval(viviendo);
+  inicioScreen();
+};
 }
