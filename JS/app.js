@@ -233,8 +233,8 @@ function vivir() {
     mascotita.energia--;
     console.log(mascotita);
     if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
-      clearInterval(viviendo);
       mostrarFinal();
+      clearInterval(viviendo);
     }
   }, intervaloVivir);
 }
