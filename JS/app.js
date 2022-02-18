@@ -54,7 +54,7 @@ function noJugarScreen() {
 /* ----------------------- Si Jugar / Nombre Mascotita ---------------------- */
 function ingresarNombreScreen() {
   elements.sectionKaomoji.innerHTML = `
-  <p>(->￣▽￣)-></p>
+  <p>ヾ(≧▽≦*)o</p>
   `;
   elements.sectionMensaje.innerHTML = `
     <div id="ingresarNombreMascotita">
@@ -220,6 +220,7 @@ function saludarScreen(nombre) {
 }
 
 /* ---------------------------------- Vivir --------------------------------- */
+// Parámetros de vida
 const edadMaxima = 10;
 const intervaloVivir = 15000;
 const intervaloEstado = 5000;
@@ -233,7 +234,7 @@ function vivir() {
     console.log(mascotita);
     if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
       clearInterval(viviendo);
-      inicioScreen();
+      mostrarFinal();
     }
   }, intervaloVivir);
 }
@@ -244,6 +245,7 @@ function mostrarEstadoActual() {
     revisarSalud();
     mascotita.hambre++;
     mascotita.aburrimiento++;
+
     if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
       clearInterval(mostrarEstadoAhora);
     }
@@ -353,18 +355,6 @@ function revisarSalud() {
             mascotita.energia
         );
         break;
-      // case 0:
-      //   animoMascotita.feliz();
-      //   console.log(
-      //     " Estoy Feliz" +
-      //       "\n Nivel de aburrimiento: " +
-      //       mascotita.aburrimiento +
-      //       "\n Nivel de hambre: " +
-      //       mascotita.hambre +
-      //       "\n Nivel de energía: " +
-      //       mascotita.energia
-      //   );
-      //   break;
       case 6:
         animoMascotita.aburridaHambrienta();
         console.log(
@@ -494,7 +484,7 @@ function comer() {
 function ejercitar() {
   mascotita.energia++;
   revisarSalud();
-  elements.sectionKaomoji.innerHTML = `<p>─=≡Σ((( つ > <)つ</p>
+  elements.sectionKaomoji.innerHTML = `<p>─=≡Σ((( つ >.<)つ</p>
   `;
   elements.sectionMensaje.innerHTML = `<p>Me siento flash!</p>`;
 }
@@ -508,30 +498,23 @@ function jugar() {
   elements.sectionMensaje.innerHTML = `<p>Wiii eso fue sorprendente!!! <br>
   ¿Qué hacemos ahora?</p>`;
 }
-function reiniciar() {
-  mascotita.energia = 0;
-  elements.sectionKaomoji.innerHTML = `
-  <p>⁂*.<( ⁀▽⁀ )>*⁂</p>
-  `;
-  elements.sectionMensaje.innerHTML = `
-  <p>Holis! ¿Queres jugar?</p>
-  `;
-  mascotita.lineaAburrimiento.destroy();
-  mascotita.lineaEnergia.destroy();
-  mascotita.lineaHambre.destroy();
-  elements.btn1.innerHTML = "";
-  elements.btn2.innerHTML = "";
-  elements.btn3.innerHTML = "";
-  elements.btn4.innerHTML = "";
+function actualizarBarras() {
+  const actualizarBarras = setInterval(() => {
+    mascotita.lineaEnergia.animate(mascotita.energia / 10);
+    mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 10);
+    mascotita.lineaHambre.animate(mascotita.hambre / 10);
+  }, 100);
+  if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
+    clearInterval(viviendo);
+    inicioScreen();
+  }
 }
-function actualizarBarras(){
-const actualizarBarras = setInterval(()=>{
-  mascotita.lineaEnergia.animate(mascotita.energia / 10);
-  mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 10);
-  mascotita.lineaHambre.animate(mascotita.hambre / 10);
-}, 100);
-if (mascotita.edad >= edadMaxima || mascotita.energia <= 0) {
-  clearInterval(viviendo);
-  inicioScreen();
-};
+/* ----------------------------- Reiniciar Juego ---------------------------- */
+function reiniciar() {
+  location.href = "./index.html";
+}
+
+/* -------------------------------- No Ta Más ------------------------------- */
+function mostrarFinal() {
+  location.href = "../screenDied.html";
 }
