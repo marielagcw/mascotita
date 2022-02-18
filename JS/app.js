@@ -7,10 +7,12 @@ const elements = {
   btn2: document.querySelector("#divBtn2"),
   btn3: document.querySelector("#divBtn3"),
   btn4: document.querySelector("#divBtn4"),
-  alerta: document.querySelector(".alerta"),
+  sectionAlerta: document.querySelector(".alerta"),
+  sectionBarras: document.querySelector(".barras"),
 };
 
 /* ------------------------------ Creando botones ----------------------------- */
+
 function crearBoton(innerText, action) {
   const boton = document.createElement("button");
   boton.classList.add("btn");
@@ -70,43 +72,17 @@ function validarNombre() {
   const inputNombre = document.querySelector("#inputNombre");
   const nombreMascotita = inputNombre.value;
   if (!nombreMascotita || nombreMascotita.length < 3) {
-    elements.alerta.classList.remove("hidden");
-    elements.alerta.innerHTML = `
+    elements.sectionAlerta.classList.remove("hidden");
+    elements.sectionAlerta.innerHTML = `
     <p>Por favor ingresa al menos 3 letras</p>
     `;
     setTimeout(() => {
-      elements.alerta.classList.add("hidden");
+      elements.sectionAlerta.classList.add("hidden");
     }, 2000);
   } else {
     saludarScreen(nombreMascotita);
     elements.btn4.replaceChildren(crearBoton("Volver", reiniciar));
   }
-}
-/* -------------------------- Inicia vida Mascotita ------------------------- */
-function saludarScreen(nombre) {
-  // Estado inicial de la mascotita
-  mascotita.nombre = nombre;
-  mascotita.edad = 0;
-  mascotita.kaomoji = `<p>(つ≧▽≦)つ	</p>`;
-  mascotita.energia = 62;
-  mascotita.hambre = 48;
-  mascotita.aburrimiento = 36;
-
-  // Pantalla saludo
-  if (elements.sectionKaomoji.hasChildNodes()) {
-    elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
-  }
-  elements.sectionMensaje.innerHTML = `
-  <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
-  `;
-  elements.alerta.innerHTML = "";
-
-  // Nuevos b
-  elements.btn1.replaceChildren(crearBoton("Alimentar", comer));
-  elements.btn2.replaceChildren(crearBoton("Ejercitar", ejercitar));
-  elements.btn3.replaceChildren(crearBoton("Jugar", jugar));
-  elements.btn4.replaceChildren(crearBoton("Volver", reiniciar));
-  vivir();
 }
 
 /* -------------------------------- Mascotita ------------------------------- */
@@ -118,7 +94,112 @@ const mascotita = {
   energia: 100,
   hambre: 0,
   aburrimiento: 0,
+  crearLineaEnergia: () => {
+    mascotita.lineaEnergia = new ProgressBar.Line(".barras", {
+      strokeWidth: 5,
+      color: "#4218D9",
+      duration: 500,
+      easing: "linear",
+      text: {
+        style: {
+          color: "#ffffff",
+          position: "absolute",
+          left: "0%",
+          top: "0%",
+          padding: 10,
+          margin: 10,
+          transform: {
+            prefix: true,
+            value: "translate(-110%, -0%)",
+          },
+        },
+        value: "Energia",
+        className: "progressbar-text",
+      },
+    });
+  },
+  lineaEnergia: null,
+  crearLineaAburrimiento: () => {
+    mascotita.lineaAburrimiento = new ProgressBar.Line(".barras", {
+      strokeWidth: 5,
+      color: "#6C3CC2",
+      duration: 500,
+      easing: "linear",
+      text: {
+        style: {
+          color: "#ffffff",
+          position: "absolute",
+          left: "0%",
+          top: "30%",
+          padding: 10,
+          margin: 10,
+          transform: {
+            prefix: true,
+            value: "translate(-110%, -0%)",
+          },
+        },
+        value: "Aburrimiento",
+        className: "progressbar-text",
+      },
+    });
+  },
+  lineaAburrimiento: null,
+  crearLineaHambre: () => {
+    mascotita.lineaHambre = new ProgressBar.Line(".barras", {
+      strokeWidth: 5,
+      color: "#1A0859",
+      duration: 500,
+      easing: "linear",
+      text: {
+        style: {
+          color: "#ffffff",
+          position: "absolute",
+          left: "0%",
+          top: "60%",
+          padding: 10,
+          margin: 10,
+          transform: {
+            prefix: true,
+            value: "translate(-110%, -0%)",
+          },
+        },
+        value: "Hambre",
+        className: "progressbar-text",
+      },
+    });
+  },
+  lineaHambre: null,
 };
+
+/* -------------------------- Inicia vida Mascotita ------------------------- */
+function saludarScreen(nombre) {
+  // Estado inicial de la mascotita
+  mascotita.nombre = nombre;
+  mascotita.edad = 0;
+  mascotita.kaomoji = `<p>(つ≧▽≦)つ	</p>`;
+  mascotita.energia = 62;
+  mascotita.hambre = 48;
+  mascotita.aburrimiento = 36;
+  mascotita.crearLineaEnergia();
+  mascotita.crearLineaAburrimiento();
+  mascotita.crearLineaHambre();
+
+  // Pantalla saludo
+  if (elements.sectionKaomoji.hasChildNodes()) {
+    elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
+  }
+  elements.sectionMensaje.innerHTML = `
+  <p>Holis! Soy ${nombre}! <br>gracias por jugar conmigo</p>
+  `;
+  elements.sectionAlerta.innerHTML = "";
+
+  // Nuevos botones
+  elements.btn1.replaceChildren(crearBoton("Alimentar", comer));
+  elements.btn2.replaceChildren(crearBoton("Ejercitar", ejercitar));
+  elements.btn3.replaceChildren(crearBoton("Jugar", jugar));
+  elements.btn4.replaceChildren(crearBoton("Volver", reiniciar));
+  vivir();
+}
 
 /* ---------------------------------- Vivir --------------------------------- */
 const edadMaxima = 100;
@@ -150,6 +231,9 @@ function mostrarEstadoActual() {
 
     elements.sectionKaomoji.innerHTML = mascotita.kaomoji;
     elements.sectionMensaje.innerHTML = mascotita.estado;
+    mascotita.lineaEnergia.animate(mascotita.energia / 100);
+    mascotita.lineaAburrimiento.animate(mascotita.aburrimiento / 100,);
+    mascotita.lineaHambre.animate(mascotita.hambre / 100);
   }, intervaloEstado);
 }
 const animoMascotita = {
@@ -201,7 +285,11 @@ function revisarSalud() {
   const valorEstoyHambrienta = 50;
   const valorEstoyDebil = 60;
 
-  if (mascotita.aburrimiento <= 32) {
+  if (
+    mascotita.energia >= 65 &&
+    mascotita.aburrimiento < 30 &&
+    mascotita.hambre < 30
+  ) {
     animoMascotita.feliz();
     console.log(
       " Nombre: " +
@@ -209,21 +297,6 @@ function revisarSalud() {
         "\n Edad: " +
         mascotita.edad +
         " \n Estado: Estoy feliz" +
-        "\n Nivel de aburrimiento: " +
-        mascotita.aburrimiento +
-        "\n Nivel de hambre: " +
-        mascotita.hambre +
-        "\n Nivel de energía: " +
-        mascotita.energia
-    );
-  } else if (mascotita.energia >= 62) {
-    animoMascotita.feliz();
-    console.log(
-      " Nombre: " +
-        mascotita.nombre +
-        "\n Edad: " +
-        mascotita.edad +
-        " \n Estado: Estoy feliz!" +
         "\n Nivel de aburrimiento: " +
         mascotita.aburrimiento +
         "\n Nivel de hambre: " +
@@ -366,6 +439,7 @@ function revisarSalud() {
         break;
       default:
         animoMascotita.dormida();
+
         console.log(
           " Nombre: " +
             mascotita.nombre +
