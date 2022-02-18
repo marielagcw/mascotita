@@ -303,7 +303,7 @@ function revisarSalud() {
   const valorEstoyHambrienta = 5;
   const valorEstoyDebil = 6;
   if (mascotita.energia > 9) {
-    mascotita.energia = 9;
+    mascotita.energia = 9.99;
   }
   if (mascotita.aburrimiento > 9) {
     mascotita.aburrimiento = 9;
@@ -473,7 +473,7 @@ function revisarSalud() {
 
 /* --------------------- Interacciones con la mascotita --------------------- */
 function comer() {
-  if (mascotita.hambre < 0) {
+  if (mascotita.hambre <= 0) {
     mascotita.hambre = 0;
   } else mascotita.hambre--;
   revisarSalud();
@@ -489,7 +489,7 @@ function ejercitar() {
   elements.sectionMensaje.innerHTML = `<p>Me siento flash!</p>`;
 }
 function jugar() {
-  if (mascotita.aburrimiento < 0) {
+  if (mascotita.aburrimiento <= 0) {
     mascotita.aburrimiento = 0;
   } else mascotita.aburrimiento--;
   revisarSalud();
