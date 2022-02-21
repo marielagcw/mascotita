@@ -516,5 +516,6 @@ function reiniciar() {
 
 /* -------------------------------- No Ta Más ------------------------------- */
 function mostrarFinal() {
-  location.href = "../pages/screenDied.html";
+  //location.href = "./index.html";
+  location.href = "./pages/screenDied.html";
 }
