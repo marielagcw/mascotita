@@ -36,15 +36,16 @@ section {
 .mensaje{
   height:10rem;
 }
-.alerta {
-  height: 3rem;
+.mensajeAlerta {
+  height: 1rem;
+  padding-bottom: 3rem;
   color: var(--fontColorSecondary);
   text-align: center;
   display:flex;
   flex-direction: column;
 }
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 p {
   font-size: var(--fontSizeMedium);
@@ -140,8 +141,7 @@ p {
 .progressbar-text{
   font-size: 1rem;
 }
-.alerta div{
+.barras div{
   margin: 0.3rem;
   position:relative;
-  bottom: 5rem;
 }

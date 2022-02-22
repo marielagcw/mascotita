@@ -7,7 +7,7 @@ const elements = {
   btn2: document.querySelector("#divBtn2"),
   btn3: document.querySelector("#divBtn3"),
   btn4: document.querySelector("#divBtn4"),
-  sectionAlerta: document.querySelector(".alerta"),
+  mensajeAlerta: document.querySelector(".mensajeAlerta"),
 };
 
 /* ------------------------------ Creando botones ----------------------------- */
@@ -71,13 +71,14 @@ function validarNombre() {
   const inputNombre = document.querySelector("#inputNombre");
   const nombreMascotita = inputNombre.value;
   if (!nombreMascotita || nombreMascotita.length < 3) {
-    elements.sectionAlerta.classList.remove("hidden");
-    elements.sectionAlerta.innerHTML = `
+    elements.mensajeAlerta.classList.remove("hidden");
+    elements.mensajeAlerta.innerHTML = `
     <p>Por favor ingresa al menos 3 letras</p>
     `;
     setTimeout(() => {
-      elements.sectionAlerta.classList.add("hidden");
+      elements.mensajeAlerta.classList.add("hidden");
     }, 2000);
+    ingresarNombreScreen();
   } else {
     saludarScreen(nombreMascotita);
     elements.btn4.replaceChildren(crearBoton("Volver", reiniciar));
